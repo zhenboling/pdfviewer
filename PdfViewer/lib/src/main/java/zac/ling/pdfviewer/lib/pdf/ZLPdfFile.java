@@ -10,9 +10,9 @@ import java.io.File;
 import java.io.IOException;
 
 import androidx.annotation.NonNull;
+import zac.ling.pdfviewer.lib.utilities.ZLBitmapCache;
 import zac.ling.pdfviewer.lib.utilities.ZLFileUtils;
 import zac.ling.pdfviewer.lib.utilities.ZLLogUtils;
-import zac.ling.pdfviewer.lib.utilities.ZLBitmapCache;
 
 public class ZLPdfFile {
     
@@ -66,12 +66,12 @@ public class ZLPdfFile {
         return ParcelFileDescriptor.open(mPdfFile, ParcelFileDescriptor.MODE_READ_ONLY);
     }
     
-    public AsyncTask getPage(final int pageFrom, final int pageTo, final ZLOnPdfPageRenderListener listener) {
+    public AsyncTask getPages(final int pageFrom, final int pageTo, final ZLOnPdfPageRenderListener listener) {
         if (pageFrom == pageTo) {
             return null;
         }
         if (pageFrom > pageTo) {
-            return getPage(pageTo, pageFrom, listener);
+            return getPages(pageTo, pageFrom, listener);
         }
         if (pageFrom < 0 || pageFrom >= mPageCount || pageTo > mPageCount || !mPdfFile.exists()) {
             return null;
@@ -87,7 +87,7 @@ public class ZLPdfFile {
                 }
                 return bitmaps;
                 */
-                return getPage(integers[0], integers[1]);
+                return getPages(integers[0], integers[1]);
             }
             
             @Override
@@ -99,22 +99,23 @@ public class ZLPdfFile {
         }.execute(pageFrom, pageTo);
     }
     
-    public Bitmap getPage(int pageNum) {
-        Bitmap[] bitmaps = getPage(pageNum, pageNum + 1);
+    public Bitmap getPage(int pageNum, boolean renderIfNotExist) {
+        final String cacheKey = getCacheKey(pageNum);
+        Bitmap bitmap = mPageCache.getBitmapFromMemCache(cacheKey);
+        if (bitmap != null || !renderIfNotExist) {
+            return bitmap;
+        }
+        
+        Bitmap[] bitmaps = getPages(pageNum, pageNum + 1);
         return (bitmaps == null ? null : bitmaps[0]);
     }
     
-    public Bitmap getPageIfCached(int pageNum) {
-        final String cacheKey = getCacheKey(pageNum);
-        return mPageCache.getBitmapFromMemCache(cacheKey);
-    }
-    
-    public synchronized Bitmap[] getPage(int pageFrom, int pageTo) {
+    public synchronized Bitmap[] getPages(int pageFrom, int pageTo) {
         if (pageFrom == pageTo) {
             return null;
         }
         if (pageFrom > pageTo) {
-            return getPage(pageTo, pageFrom);
+            return getPages(pageTo, pageFrom);
         }
         if (pageFrom < 0 || pageFrom >= mPageCount || pageTo > mPageCount) {
             return null;

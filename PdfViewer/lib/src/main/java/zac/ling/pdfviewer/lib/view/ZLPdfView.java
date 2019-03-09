@@ -3,7 +3,6 @@ package zac.ling.pdfviewer.lib.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
@@ -187,7 +186,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         float y = -(mOffsetY - pageFrom * mCurrentBitmapHeight);
         
         for (int i = pageFrom; i < pageTo; ++i) {
-            Bitmap bitmap = (mFlinging ? mPdfFile.getPageIfCached(i) : mPdfFile.getPage(i));
+            Bitmap bitmap = mPdfFile.getPage(i, !mFlinging);
             if (bitmap != null) {
                 Rect dst = setAndGetDestinationRect(x, y, mCurrentBitmapWidth + x, mCurrentBitmapHeight + y);
                 canvas.drawBitmap(bitmap, setAndGetSourceRect(), dst, mPagePaint);
@@ -293,7 +292,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         mFlinging = (currentY != finalY);
         int pageFrom = getPageFromInclusive(finalY);
         int pageTo = getPageToExclusive(finalY);
-        mPdfFile.getPage(pageFrom, pageTo, null);
+        mPdfFile.getPages(pageFrom, pageTo, null);
         setOffset(currentX, currentY);
         if (mFlinging) {
             notifyPageNumber();
@@ -333,7 +332,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     }
     
     private void setupOriginalBitmap() {
-        mPdfFile.getPage(0, 1, new ZLOnPdfPageRenderListener() {
+        mPdfFile.getPages(0, 1, new ZLOnPdfPageRenderListener() {
             @Override
             public void onRendered(Bitmap... bitmap) {
                 mOriginalBitmapWidth = bitmap[0].getWidth();
@@ -441,7 +440,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
             if (mRenderTask != null) {
                 mRenderTask.cancel(true);
             }
-            mRenderTask = mPdfFile.getPage(getPageFromInclusive(), getPageToExclusive(), mOnPdfPageRenderListener);
+            mRenderTask = mPdfFile.getPages(getPageFromInclusive(), getPageToExclusive(), mOnPdfPageRenderListener);
         }
     }
 }
