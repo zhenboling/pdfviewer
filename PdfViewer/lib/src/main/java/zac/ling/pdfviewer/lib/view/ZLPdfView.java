@@ -230,12 +230,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     
     @Override
     public void onDoubleTap(float x, float y) {
-        float newScale;
-        if (mCurrentScale == getFitWidthScale()) {
-            newScale = getFitWidthAndHeightScale();
-        } else {
-            newScale = getFitWidthScale();
-        }
+        float newScale = (mCurrentScale == mMaxScale ? mMinScale : mMaxScale);
         onScale(newScale / mCurrentScale, x, y);
     }
     
@@ -366,8 +361,14 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
                 setCurrentScale(getFitWidthAndHeightScale());
                 break;
         }
-        mMinScale = Math.min(mMinScale, mCurrentScale);
-        mMaxScale = Math.max(mMaxScale, mCurrentScale);
+    
+        float originalScale = getOriginalScale();
+        float fitWidthScale = getFitWidthScale();
+        float fitWidthAndHeightScale = getFitWidthAndHeightScale();
+        float minScale = Math.min(originalScale, Math.min(fitWidthScale, fitWidthAndHeightScale));
+        float maxScale = Math.max(originalScale, Math.max(fitWidthScale, fitWidthAndHeightScale));
+        mMinScale = Math.min(mMinScale, minScale);
+        mMaxScale = Math.max(mMaxScale, maxScale);
         
         setOffsetX(0);
         setOffsetY(0);
@@ -397,7 +398,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         if (mCurrentBitmapWidth <= mCanvasWidth) {
             mOffsetX = (mCurrentBitmapWidth - mCanvasWidth) / 2.0F;
         } else {
-            float min = -mCanvasWidth / 2.0F;
+            float min = 0;
             float max = mCurrentBitmapWidth - mCanvasWidth;
             mOffsetX = Math.max(min, Math.min(max, offsetX));
         }

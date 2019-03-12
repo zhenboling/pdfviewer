@@ -105,7 +105,7 @@ public class ZLPdfViewerFragment extends Fragment implements ZLOnPdfLoadListener
             mPageNumberAnimation.cancel();
             mPageNumberAnimation = null;
         }
-        final String pageNumberText = (currentPageNumber + 1) + " / " + totalPageNumber;
+        final String pageNumberText = getString(R.string.page_num, currentPageNumber + 1, totalPageNumber);
         mPageNumberView.setText(pageNumberText);
         mPageNumberView.setVisibility(View.VISIBLE);
         
