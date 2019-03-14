@@ -20,15 +20,16 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+
 -keep public class zac.ling.pdfviewer.lib.view.ZLPdfView
 -keep public class zac.ling.pdfviewer.lib.ZLPdfViewerFragment
 
--keepmembers,allowoptimization public class zac.ling.pdfviewer.lib.view.ZLPdfView {
+-keepclassmembers public class zac.ling.pdfviewer.lib.view.ZLPdfView {
     public <methods>;
     public <fields>;
 }
 
--keepmembers,allowoptimization public class zac.ling.pdfviewer.lib.ZLPdfViewerFragment {
+-keepclassmembers public class zac.ling.pdfviewer.lib.ZLPdfViewerFragment {
     public <methods>;
     public <fields>;
 }
