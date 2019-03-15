@@ -1,20 +1,4 @@
-apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'com.android.library'
-
-publish {
-    def groupProjectID = 'zac.ling.lib'
-    def artifactProjectID = 'pdfviewer'
-    def publishVersionID = '1.5'
-
-    userOrg = 'zhenboling'
-    repoName = 'pdfviewer'
-    groupId = groupProjectID
-    artifactId = artifactProjectID
-    publishVersion = publishVersionID
-    desc = 'PDF Viewer Library for Android'
-    website = 'https://github.com/zhenboling/pdfviewer'
-
-}
 
 android {
     compileSdkVersion 28
@@ -22,11 +6,10 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 5
-        versionName "1.5"
+        versionCode 6
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -43,7 +26,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
+
     testImplementation 'junit:junit:4.12'
+
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
