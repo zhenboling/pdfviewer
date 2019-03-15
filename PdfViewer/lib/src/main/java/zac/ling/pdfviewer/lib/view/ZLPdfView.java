@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -50,14 +51,14 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     private float mCanvasWidth;
     private float mCanvasHeight;
     
-    private float mOffsetX = 0; // length in pixel to the left of the original point
-    private float mOffsetY = 0; // height in pixel to the top of the original point
+    private float mOffsetX; // length in pixel to the left of the original point
+    private float mOffsetY; // height in pixel to the top of the original point
     
-    private float mMinScale = 1.0F;
-    private float mMaxScale = 5.0F;
+    private float mMinScale;
+    private float mMaxScale;
     
-    private float mOriginalBitmapWidth = 0;
-    private float mOriginalBitmapHeight = 0;
+    private float mOriginalBitmapWidth;
+    private float mOriginalBitmapHeight;
     
     private float mCurrentScale;
     private float mCurrentBitmapWidth;
@@ -68,6 +69,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     
     private Paint mPagePaint;
     private Paint mSeparatorPaint;
+    private Paint mBackgroundPaint;
     
     private boolean mFlinging = false;
     
@@ -94,8 +96,9 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     }
     
     private void init() {
-        mPagePaint = new Paint();
+        setupPagePaint();
         setupSeparatorPaint();
+        setupBackgroundPaint();
         mOnDoubleTapListener = new ZLTapManager(this);
         mOnGestureListener = new ZLGestureManager(getContext(), this);
         mGestureDetector = new GestureDetectorCompat(getContext(), mOnGestureListener);
@@ -110,11 +113,25 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         };
     }
     
+    private void setupPagePaint() {
+        mPagePaint = new Paint();
+    }
+    
     private void setupSeparatorPaint() {
         mSeparatorPaint = new Paint();
         mSeparatorPaint.setStyle(Style.FILL_AND_STROKE);
         mSeparatorPaint.setStrokeWidth(getResources().getDimension(R.dimen.pdfPageSeparator));
-        mSeparatorPaint.setColor(ContextCompat.getColor(getContext(), R.color.pdfPageSeparator));
+        mSeparatorPaint.setColor(getBackgroundColor());
+    }
+    
+    private void setupBackgroundPaint() {
+        mBackgroundPaint = new Paint();
+        mBackgroundPaint.setColor(getBackgroundColor());
+    }
+    
+    @ColorInt
+    public int getBackgroundColor() {
+        return ContextCompat.getColor(getContext(), R.color.pdfPageBackground);
     }
     
     @Override
@@ -182,17 +199,34 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         final int pageFrom = getPageFromInclusive();
         final int pageTo = getPageToExclusive();
         
-        final float x = -mOffsetX;
+        float x = -mOffsetX;
         float y = -(mOffsetY - pageFrom * mCurrentBitmapHeight);
         
         for (int i = pageFrom; i < pageTo; ++i) {
+            // draw PDF page
             Bitmap bitmap = mPdfFile.getPage(i, !mFlinging);
             if (bitmap != null) {
                 Rect dst = setAndGetDestinationRect(x, y, mCurrentBitmapWidth + x, mCurrentBitmapHeight + y);
                 canvas.drawBitmap(bitmap, setAndGetSourceRect(), dst, mPagePaint);
             }
-            canvas.drawLine(0, y, mCanvasWidth, y, mSeparatorPaint);
+    
+            // draw left and right side of background
+            if (x > 0) {
+                canvas.drawRect(0, Math.max(0, y), x, mCurrentBitmapHeight + y, mBackgroundPaint);
+                canvas.drawRect(mCanvasWidth - x, Math.max(0, y), mCanvasWidth, mCurrentBitmapHeight + y, mBackgroundPaint);
+            }
+    
+            // draw separator line
+            if (i != 0) {
+                canvas.drawLine(0, y, mCanvasWidth, y, mSeparatorPaint);
+            }
+            
             y += mCurrentBitmapHeight;
+        }
+        
+        // draw bottom of background
+        if (y < mCanvasHeight) {
+            canvas.drawRect(0, y, mCanvasWidth, mCanvasHeight, mBackgroundPaint);
         }
     }
     
@@ -205,7 +239,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     }
     
     private int getPageToExclusive(float offsetY) {
-        return (int) Math.ceil((offsetY + mCanvasHeight) / mCurrentBitmapHeight);
+        return Math.min(mPdfFile.getPageCount(), (int) Math.ceil((offsetY + mCanvasHeight) / mCurrentBitmapHeight));
     }
     
     private int getPageToExclusive() {
@@ -326,6 +360,15 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         redraw(true);
     }
     
+    public void refresh() {
+        setupOriginalBitmap();
+    }
+    
+    private void resetScaleRange() {
+        mMinScale = 1.0F;
+        mMaxScale = 4.0F;
+    }
+    
     private void setupOriginalBitmap() {
         mPdfFile.getPages(0, 1, new ZLOnPdfPageRenderListener() {
             @Override
@@ -350,6 +393,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     }
     
     private void setupInitialBitmap() {
+        resetScaleRange();
         switch (mViewMode) {
             case ORIGINAL:
                 setCurrentScale(getOriginalScale());
