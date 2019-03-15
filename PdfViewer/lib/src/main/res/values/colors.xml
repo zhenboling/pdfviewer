@@ -2,5 +2,5 @@
 <resources>
     <color name="pageNumberText">@android:color/white</color>
     <color name="pageNumberBackground">@android:color/darker_gray</color>
-    <color name="pdfPageSeparator">@android:color/darker_gray</color>
+    <color name="pdfPageBackground">@android:color/darker_gray</color>
 </resources>
