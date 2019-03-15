@@ -21,15 +21,29 @@
 #-renamesourcefileattribute SourceFile
 
 
--keep public class zac.ling.pdfviewer.lib.view.ZLPdfView
 -keep public class zac.ling.pdfviewer.lib.ZLPdfViewerFragment
+-keep public class zac.ling.pdfviewer.lib.view.ZLPdfView
+-keep public class zac.ling.pdfviewer.lib.pdf.ZLPdfFile
+
+-keepclassmembers public class zac.ling.pdfviewer.lib.ZLPdfViewerFragment {
+    public <methods>;
+    public <fields>;
+}
 
 -keepclassmembers public class zac.ling.pdfviewer.lib.view.ZLPdfView {
     public <methods>;
     public <fields>;
 }
 
--keepclassmembers public class zac.ling.pdfviewer.lib.ZLPdfViewerFragment {
+-keepclassmembers public class zac.ling.pdfviewer.lib.pdf.ZLPdfFile {
     public <methods>;
     public <fields>;
+}
+
+-keep public interface zac.ling.pdfviewer.lib.pdf.ZLOnPdfLoadListener {
+    <methods>;
+}
+
+-keep public interface zac.ling.pdfviewer.lib.pdf.ZLOnPdfPageChangeListener {
+    <methods>;
 }

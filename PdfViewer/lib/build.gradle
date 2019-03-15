@@ -4,7 +4,7 @@ apply plugin: 'com.android.library'
 publish {
     def groupProjectID = 'zac.ling.lib'
     def artifactProjectID = 'pdfviewer'
-    def publishVersionID = '1.4'
+    def publishVersionID = '1.5'
 
     userOrg = 'zhenboling'
     repoName = 'pdfviewer'
@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.4"
+        versionCode 5
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
