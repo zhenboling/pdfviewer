@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="pageNumberText">@android:color/white</color>
-    <color name="pageNumberBackground">@android:color/darker_gray</color>
-    <color name="pdfPageBackground">@android:color/darker_gray</color>
+    <color name="zl_pdf_page_number_text">@android:color/white</color>
+    <color name="zl_pdf_page_number_background">@android:color/darker_gray</color>
+    <color name="zl_pdf_page_background">@android:color/darker_gray</color>
 </resources>

@@ -71,7 +71,7 @@ public class ZLPdfViewerFragment extends Fragment implements ZLOnPdfLoadListener
     
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.pdf_viewer_fragment, container, false);
+        return inflater.inflate(R.layout.zl_pdf_viewer_fragment, container, false);
     }
     
     @Override
@@ -105,7 +105,7 @@ public class ZLPdfViewerFragment extends Fragment implements ZLOnPdfLoadListener
             mPageNumberAnimation.cancel();
             mPageNumberAnimation = null;
         }
-        final String pageNumberText = getString(R.string.page_num, currentPageNumber + 1, totalPageNumber);
+        final String pageNumberText = getString(R.string.zl_pdf_page_number, currentPageNumber + 1, totalPageNumber);
         mPageNumberView.setText(pageNumberText);
         mPageNumberView.setVisibility(View.VISIBLE);
         

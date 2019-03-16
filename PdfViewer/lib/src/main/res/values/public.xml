@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <public name="page_num"
+    <public name="zl_pdf_page_number"
             type="string" />
 </resources>

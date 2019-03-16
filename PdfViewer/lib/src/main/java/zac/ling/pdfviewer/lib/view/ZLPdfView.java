@@ -99,6 +99,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         setupPagePaint();
         setupSeparatorPaint();
         setupBackgroundPaint();
+    
         mOnDoubleTapListener = new ZLTapManager(this);
         mOnGestureListener = new ZLGestureManager(getContext(), this);
         mGestureDetector = new GestureDetectorCompat(getContext(), mOnGestureListener);
@@ -120,7 +121,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     private void setupSeparatorPaint() {
         mSeparatorPaint = new Paint();
         mSeparatorPaint.setStyle(Style.FILL_AND_STROKE);
-        mSeparatorPaint.setStrokeWidth(getResources().getDimension(R.dimen.pdfPageSeparator));
+        mSeparatorPaint.setStrokeWidth(getResources().getDimension(R.dimen.zl_pdf_page_separator_height));
         mSeparatorPaint.setColor(getBackgroundColor());
     }
     
@@ -131,7 +132,7 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     
     @ColorInt
     public int getBackgroundColor() {
-        return ContextCompat.getColor(getContext(), R.color.pdfPageBackground);
+        return ContextCompat.getColor(getContext(), R.color.zl_pdf_page_background);
     }
     
     @Override
