@@ -16,7 +16,7 @@ implementation 'androidx.appcompat:appcompat:1.0.2'
 ## How to use the library
 
 Step 1:
-Add the following into your application build.gradle
+Add the following into the build.gradle file of your application
 
 implementation 'zac.ling.libs:pdfviewer:1.7.0'
 
@@ -35,14 +35,24 @@ Add the following into your activity to display a PDF, assuming your FrameLayout
             fragmentManager.beginTransaction().add(R.id.pdf_viewer_frame_layout, fragment).commit();
         }
 
+Step 3:
+Optionally implement the following two interfaces
+
+        // on PDF file loaded
+        public interface ZLOnPdfLoadListener { void onLoaded(); }
+        
+        // currentPageNumber is from 0 to totalPageCount-1
+        public interface ZLOnPdfPageChangeListener { void atPage(int currentPageNumber, int totalPageCount); }
+        
+
 ### ==== Version 1.7 ====
 
-Draw background in gray.
+Draw background in gray
 
 
 ### ==== Version 1.5 ====
 
-Fix a dragging issue.
+Fix a dragging issue
 
 
 ### ==== Version 1.0 ====
