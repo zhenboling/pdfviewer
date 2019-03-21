@@ -123,4 +123,8 @@ public class ZLPdfViewerFragment extends Fragment implements ZLOnPdfLoadListener
             mPdfView.jumpToPage(mCurrentPageNumber);
         }
     }
+    
+    public void refreshView() {
+        mPdfView.refresh();
+    }
 }

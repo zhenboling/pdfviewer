@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -196,7 +197,6 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
         if (mOriginalBitmapWidth <= 0 || mOriginalBitmapHeight <= 0) {
             return;
         }
-        
         final int pageFrom = getPageFromInclusive();
         final int pageTo = getPageToExclusive();
         
@@ -319,7 +319,11 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     
     @Override
     public void onFling(float currentX, float currentY, float finalX, float finalY) {
-        mFlinging = (currentY != finalY);
+        boolean finished = (currentX == finalX && currentY == finalY);
+        if (finished && !mFlinging) {
+            return;
+        }
+        mFlinging = !finished;
         int pageFrom = getPageFromInclusive(finalY);
         int pageTo = getPageToExclusive(finalY);
         mPdfFile.getPages(pageFrom, pageTo, null);
@@ -362,7 +366,12 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     }
     
     public void refresh() {
-        setupOriginalBitmap();
+        new Handler(getContext().getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setupInitialBitmap();
+            }
+        }, 500);
     }
     
     private void resetScaleRange() {

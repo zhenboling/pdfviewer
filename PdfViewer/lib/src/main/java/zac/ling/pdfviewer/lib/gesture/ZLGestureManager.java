@@ -38,8 +38,8 @@ public class ZLGestureManager implements OnGestureListener {
     }
     
     @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX, float velocityY) {
-        mOnScrollListener.onDrag(velocityX, velocityY);
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float distanceX, float distanceY) {
+        mOnScrollListener.onDrag(distanceX, distanceY);
         return true;
     }
     
