@@ -324,9 +324,6 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
             return;
         }
         mFlinging = !finished;
-        int pageFrom = getPageFromInclusive(finalY);
-        int pageTo = getPageToExclusive(finalY);
-        mPdfFile.getPages(pageFrom, pageTo, null);
         setOffset(currentX, currentY);
         if (mFlinging) {
             notifyPageNumber();
@@ -337,11 +334,6 @@ public class ZLPdfView extends View implements ZLOnScrollListener, ZLOnScaleList
     public void onFlingPaused() {
         mFlinging = false;
         redraw(true);
-    }
-    
-    @Override
-    public View getView() {
-        return this;
     }
     
     public void setPdfFile(@NonNull ZLPdfFile pdfFile) {

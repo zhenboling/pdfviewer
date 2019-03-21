@@ -1,7 +1,5 @@
 package zac.ling.pdfviewer.lib.gesture;
 
-import android.view.View;
-
 public interface ZLOnScrollListener {
     
     void onDrag(float deltaX, float deltaY);
@@ -22,5 +20,4 @@ public interface ZLOnScrollListener {
     
     void onFlingPaused();
     
-    View getView();
 }

@@ -5,8 +5,6 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.widget.OverScroller;
 
-import androidx.core.view.ViewCompat;
-
 public class ZLGestureManager implements OnGestureListener {
     
     private ZLOnScrollListener mOnScrollListener;
@@ -24,7 +22,6 @@ public class ZLGestureManager implements OnGestureListener {
             mOverScroller.forceFinished(true);
             mOnScrollListener.onFlingPaused();
         }
-        ViewCompat.postInvalidateOnAnimation(mOnScrollListener.getView());
         return true;
     }
     
@@ -60,7 +57,6 @@ public class ZLGestureManager implements OnGestureListener {
 
         // Why need to negate velocity? I really don't know.
         mOverScroller.fling(startX, startY, (int) -velocityX, (int) -velocityY, minX, maxX, minY, maxY);
-        ViewCompat.postInvalidateOnAnimation(mOnScrollListener.getView());
         return true;
     }
     
