@@ -1,7 +1,6 @@
 package zac.ling.pdfviewer.lib.gesture;
 
 public interface ZLOnScrollListener {
-    
     void onDrag(float deltaX, float deltaY);
     
     int getFlingStartX();
@@ -19,5 +18,4 @@ public interface ZLOnScrollListener {
     void onFling(float currentX, float currentY, float finalX, float finalY);
     
     void onFlingPaused();
-    
 }

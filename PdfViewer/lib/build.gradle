@@ -15,7 +15,7 @@ ext {
     siteUrl = 'https://github.com/zhenboling/pdfviewer'
     gitUrl = 'https://github.com/zhenboling/pdfviewer.git'
 
-    libraryVersion = '1.8.0'
+    libraryVersion = '1.9.0'
 
     developerId = 'zhenboling'
     developerName = 'Zhenbo Ling'
@@ -32,8 +32,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.8"
+        versionCode 9
+        versionName "1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

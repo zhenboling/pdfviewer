@@ -55,8 +55,9 @@ public class ZLGestureManager implements OnGestureListener {
         int minY = mOnScrollListener.getFlingMinY();
         int maxY = mOnScrollListener.getFlingMaxY();
 
-        // Why need to negate velocity? I really don't know.
         mOverScroller.fling(startX, startY, (int) -velocityX, (int) -velocityY, minX, maxX, minY, maxY);
+        computeScroll();
+        
         return true;
     }
     

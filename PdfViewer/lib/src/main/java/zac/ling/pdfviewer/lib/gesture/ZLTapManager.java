@@ -4,7 +4,6 @@ import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.MotionEvent;
 
 public class ZLTapManager implements OnDoubleTapListener {
-    
     private ZLOnTapListener mOnTapListener;
     
     public ZLTapManager(ZLOnTapListener onTapListener) {

@@ -19,6 +19,7 @@ public class ZLScaleManager extends ScaleGestureDetector.SimpleOnScaleGestureLis
         float scaleFactor = detector.getScaleFactor();
         float focusX = detector.getFocusX();
         float focusY = detector.getFocusY();
+    
         mOnScaleListener.onScale(scaleFactor, focusX, focusY);
         return true;
     }

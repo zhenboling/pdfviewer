@@ -80,13 +80,6 @@ public class ZLPdfFile {
             
             @Override
             protected Bitmap[] doInBackground(Integer... integers) {
-                /*
-                Bitmap[] bitmaps = new Bitmap[integers[1] - integers[0]];
-                for (int i = 0; i < bitmaps.length; ++i) {
-                    bitmaps[i] = getPage(i + integers[0]);
-                }
-                return bitmaps;
-                */
                 return getPages(integers[0], integers[1]);
             }
             
